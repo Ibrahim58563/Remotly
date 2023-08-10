@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:store/all_products_screen.dart';
 import 'package:store/cart_screen.dart';
 import 'package:store/constants/images_assets.dart';
 import 'package:store/constants/text_styles.dart';
@@ -20,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final List<AnimationController> _animationControllers = [];
-  final List<bool> _itemAnimationStates = [];
   late final AnimationController _controller;
   @override
   void initState() {
@@ -211,15 +211,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     );
                   }),
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   'New arrivals',
                   style: mainTitle,
                 ),
-                SeeMoreWidget(),
+                SeeMoreWidget(onTap: () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rotate,
+                          alignment: Alignment.center,
+                          duration: const Duration(seconds: 1),
+                          child: const AllProductsScreen()));
+                }),
               ],
             ),
             const SizedBox(
@@ -376,26 +384,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 }
 
 class SeeMoreWidget extends StatelessWidget {
+  final Function()? onTap;
   const SeeMoreWidget({
     super.key,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        Text(
-          'See more',
-          style: greyText,
-        ),
-        SizedBox(
-          width: 5,
-        ),
-        Icon(
-          Icons.keyboard_arrow_right_rounded,
-          color: Color(0xFF8A8B7A),
-        ),
-      ],
+    return InkWell(
+      onTap: onTap,
+      child: const Row(
+        children: [
+          Text(
+            'See more',
+            style: greyText,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Icon(
+            Icons.keyboard_arrow_right_rounded,
+            color: Color(0xFF8A8B7A),
+          ),
+        ],
+      ),
     );
   }
 }
