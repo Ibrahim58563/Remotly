@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:store/cart_screen.dart';
 import 'package:store/constants/images_assets.dart';
 import 'package:store/constants/text_styles.dart';
@@ -51,8 +52,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const CartScreen()));
+            Navigator.push(
+                context,
+                PageTransition(
+                    type: PageTransitionType.bottomToTop,
+                    duration: const Duration(seconds: 1),
+                    child: const CartScreen()));
           },
           backgroundColor: Colors.black,
           child: const Icon(
@@ -431,9 +436,11 @@ class MainAppBar extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CartScreen()),
-                );
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.fade,
+                        duration: const Duration(seconds: 1),
+                        child: const CartScreen()));
               },
               child: CircleAvatar(
                 radius: 25.5,
