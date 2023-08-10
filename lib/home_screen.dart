@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:store/cart_screen.dart';
 import 'package:store/constants/images_assets.dart';
 import 'package:store/constants/text_styles.dart';
@@ -9,9 +10,41 @@ import 'package:store/features/presentation/manager/add_to_cart_cubit/add_to_car
 
 import 'features/presentation/manager/get_all_products_cubit/all_products_cubit.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  final List<AnimationController> _animationControllers = [];
+  final List<bool> _itemAnimationStates = [];
+  late final AnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(duration: const Duration(seconds: 2), vsync: this);
+
+    for (int i = 0; i < 3; i++) {
+      _animationControllers.add(AnimationController(
+        duration: const Duration(seconds: 1),
+        vsync: this,
+      ));
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    for (var controller in _animationControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  bool startAnimation = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -294,13 +327,23 @@ class HomeScreen extends StatelessWidget {
                                                   .read<AddToCartCubit>()
                                                   .addToCart(
                                                       state.products[index]);
-                                              print("Added from UI");
+                                              if (!startAnimation) {
+                                                _animationControllers[index]
+                                                    .forward();
+                                                startAnimation = true;
+                                              } else {
+                                                _animationControllers[index]
+                                                    .reverse();
+                                                startAnimation = false;
+                                              }
                                             },
-                                            child: const Icon(
-                                              CupertinoIcons.cart_badge_plus,
-                                              color: Color(0xFFBA5C3D),
+                                            child: Lottie.asset(
+                                              Assets.animationsCart,
+                                              height: 40,
+                                              controller:
+                                                  _animationControllers[index],
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -315,7 +358,7 @@ class HomeScreen extends StatelessWidget {
                     return Text(state.failure);
                   } else {
                     print(state);
-                    return const CircularProgressIndicator();
+                    return Lottie.asset(Assets.animationsLoading);
                   }
                 },
               ),
@@ -388,9 +431,9 @@ class MainAppBar extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CartScreen()));
+                  context,
+                  MaterialPageRoute(builder: (context) => const CartScreen()),
+                );
               },
               child: CircleAvatar(
                 radius: 25.5,

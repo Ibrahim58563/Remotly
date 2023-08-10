@@ -1,6 +1,14 @@
 class Assets {
   Assets._();
   
+  /// Assets for animationsCart
+  /// assets/animations/cart.json
+  static const String animationsCart = "assets/animations/cart.json";
+
+  /// Assets for animationsLoading
+  /// assets/animations/loading.json
+  static const String animationsLoading = "assets/animations/loading.json";
+
   /// Assets for imagesCartIcon
   /// assets/images/cart_icon.svg
   static const String imagesCartIcon = "assets/images/cart_icon.svg";
