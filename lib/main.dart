@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:store/core/repo/home_repo_implementation.dart';
@@ -9,6 +10,7 @@ import 'package:store/features/presentation/views/screens/home_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'core/models/cart_model/cart_hive_model.dart';
 import 'features/presentation/manager/get_all_products_cubit/all_products_cubit.dart';
+import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +29,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setStatusBarColor(
+        Colors.white); // Change this color as needed
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -41,8 +50,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
+              .copyWith(background: Colors.white),
         ),
         initialRoute: '/',
         routes: AppRoutes.routes,

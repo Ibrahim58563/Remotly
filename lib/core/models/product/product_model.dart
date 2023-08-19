@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../cart_model/cart_hive_model.dart';
 import 'rating.dart';
 
 class ProductModel extends Equatable {
@@ -22,6 +23,22 @@ class ProductModel extends Equatable {
     this.image,
     this.rating,
   });
+
+  factory ProductModel.fromCartHiveModel(CartHiveModel cartHiveModel) {
+    return ProductModel(
+      id: cartHiveModel.id,
+      title: cartHiveModel.title,
+      price: cartHiveModel.price,
+      description: cartHiveModel.description,
+      category: cartHiveModel.category,
+      image: cartHiveModel.image,
+      rating: Rating.fromJson({
+        'rating': cartHiveModel.rating,
+        'count': 234,
+      }), // Assuming Rating constructor requires ratingValue
+      quantity: cartHiveModel.quantity,
+    );
+  }
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         id: json['id'] as int?,

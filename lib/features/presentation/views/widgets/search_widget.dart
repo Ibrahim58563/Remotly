@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:store/core/utils/colors.dart';
 import 'package:store/core/utils/strings.dart';
+import 'package:store/features/presentation/manager/get_all_products_cubit/all_products_cubit.dart';
 
 import '../../../../constants/images_assets.dart';
 import '../../../../constants/text_styles.dart';
@@ -26,9 +28,23 @@ class SearchWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              AppStrings.search,
-              style: greyText.copyWith(fontSize: 20),
+            BlocListener<AllProductsCubit, AllProductsState>(
+              listener: (context, state) {},
+              child: Expanded(
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: AppStrings.search,
+                    border: InputBorder.none,
+                  ),
+                  style: greyText.copyWith(fontSize: 20),
+                  onChanged: (value) {
+                    var result = context.read<AllProductsCubit>().searchProducts(value);
+                    
+                  },
+                  onTap: () {
+                  },
+                ),
+              ),
             ),
             SvgPicture.asset(
               Assets.imagesCustomizeIcon,

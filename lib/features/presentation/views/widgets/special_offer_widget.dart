@@ -26,10 +26,13 @@ class SpecialOfferWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  AppStrings.adjustable,
-                  style: mainTitle.copyWith(
-                    color: AppColors.white,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: Text(
+                    AppStrings.adjustable,
+                    style: mainTitle.copyWith(
+                      color: AppColors.white,
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -56,16 +59,25 @@ class SpecialOfferWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: AppColors.yellow,
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 22, vertical: 12),
-                        child: Text(
-                          AppStrings.view,
-                          style: subtitle,
+                    InkWell(
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/details', arguments: {
+                        'title': AppStrings.adjustable,
+                        'vendor': AppStrings.vendor,
+                        'rating': AppStrings.rating,
+                        'image': Assets.imagesChair,
+                      }),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppColors.yellow,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 22, vertical: 12),
+                          child: Text(
+                            AppStrings.view,
+                            style: subtitle,
+                          ),
                         ),
                       ),
                     ),

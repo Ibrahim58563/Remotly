@@ -16,6 +16,7 @@ class HomeProductItems extends StatelessWidget {
         builder: (context, state) {
           if (state is AllProductsSuccess) {
             return ListView.separated(
+                shrinkWrap: true,
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 10),
                 itemCount: 3,

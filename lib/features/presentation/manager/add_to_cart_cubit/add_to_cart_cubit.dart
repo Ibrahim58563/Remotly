@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
@@ -38,6 +40,30 @@ class AddToCartCubit extends Cubit<AddToCartState> {
           ));
       print(_cartBox.length);
       print("one item added to Hive");
+    }
+    emit(AddToCartSuccess(_cartItems));
+  }
+
+  void removeFromCart(ProductModel product) {
+    var existingCartItem =
+        _cartBox.values.firstWhereOrNull((item) => item.id == product.id);
+    if (!(existingCartItem != null || existingCartItem!.quantity < 1)) {
+      existingCartItem.quantity -= 1;
+      log("One item deleted from Cart");
+    } else {
+      _cartItems.remove(ProductModel(
+          id: product.id,
+          title: product.title,
+          image: product.image,
+          rating: product.rating,
+          // description: product.description,
+          price: product.price,
+          quantity: 1));
+      log("Removed");
+      _cartBox.length == 1 ? _cartBox.clear() : _cartBox.deleteAt(product.id!);
+      _cartItems.clear();
+      print(_cartBox.length);
+      print("one item Removed from Hive");
     }
     emit(AddToCartSuccess(_cartItems));
   }

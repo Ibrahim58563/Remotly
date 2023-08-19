@@ -4,12 +4,14 @@ import 'package:store/core/utils/strings.dart';
 import 'package:store/features/presentation/views/screens/all_products_screen.dart';
 import 'package:store/features/presentation/views/screens/cart_screen.dart';
 import 'package:store/features/presentation/views/screens/home_screen.dart';
+import 'package:store/features/presentation/views/screens/product_details_screen.dart';
 
 class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
     '/': (context) => const HomeScreen(),
     AppStrings.cartRouter: (context) => const CartScreen(),
     AppStrings.allProductsRouter: (context) => const AllProductsScreen(),
+    '/details': (context) => const ProductDetailsScreen(),
   };
   static Route<dynamic>? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {

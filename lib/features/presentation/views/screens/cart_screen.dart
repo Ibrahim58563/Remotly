@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:store/constants/text_styles.dart';
-import 'package:store/core/models/cart_model/cart_hive_model.dart';
 
 import '../widgets/cart_app_bar.dart';
 import '../widgets/cart_items_widget.dart';

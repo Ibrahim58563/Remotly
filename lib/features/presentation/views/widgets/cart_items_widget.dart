@@ -1,15 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:store/constants/images_assets.dart';
+import 'package:store/core/models/product/product_model.dart';
 import 'package:store/core/utils/strings.dart';
 
 import '../../../../constants/text_styles.dart';
 import '../../../../core/models/cart_model/cart_hive_model.dart';
 import '../../../../core/utils/colors.dart';
+import '../../manager/add_to_cart_cubit/add_to_cart_cubit.dart';
 
-class CartItemsWidget extends StatelessWidget {
+class CartItemsWidget extends StatefulWidget {
   const CartItemsWidget({super.key});
 
+  @override
+  State<CartItemsWidget> createState() => _CartItemsWidgetState();
+}
+
+class _CartItemsWidgetState extends State<CartItemsWidget> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -45,17 +54,16 @@ class CartItemsWidget extends StatelessWidget {
                             child:
                                 Stack(alignment: Alignment.topRight, children: [
                               Center(
-                                child: Image.network(
-                                  cartList[index].image.toString(),
-                                  height: 80,
-                                ),
-                              ),
-                               CircleAvatar(
-                                backgroundColor: AppColors.white,
-                                child: Icon(
-                                  CupertinoIcons.heart,
-                                  color: AppColors.yellow,
-                                ),
+                                child:
+                                    cartList[index].image == Assets.imagesChair
+                                        ? Image.asset(
+                                            cartList[index].image.toString(),
+                                            height: 80,
+                                          )
+                                        : Image.network(
+                                            cartList[index].image.toString(),
+                                            height: 80,
+                                          ),
                               ),
                             ]),
                           ),
@@ -85,7 +93,7 @@ class CartItemsWidget extends StatelessWidget {
                                   "Rating: ${cartList[index].rating!}  ",
                                   style: greyText,
                                 ),
-                                 Icon(
+                                Icon(
                                   Icons.star_rounded,
                                   color: AppColors.orange,
                                 ),
@@ -111,21 +119,73 @@ class CartItemsWidget extends StatelessWidget {
                                 Text(
                                   "\$${cartList[index].price.toString()}",
                                   style: subtitle.copyWith(
-                                    color:  AppColors.darkOrange,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    // context
-                                    //     .read<AddToCartCubit>()
-                                    //     .addToCart(cartList[index]);
-                                    // print("Added from UI");
-                                  },
-                                  child:  Icon(
-                                    CupertinoIcons.cart_badge_plus,
                                     color: AppColors.darkOrange,
                                   ),
-                                )
+                                ),
+                                BlocListener<AddToCartCubit, AddToCartState>(
+                                  listener: (context, state) {
+                                    // TODO: implement listener
+                                  },
+                                  child: InkWell(
+                                    onTap: () {
+                                      final CartHiveModel cartHiveModel =
+                                          CartHiveModel(
+                                        id: cartList[index].id,
+                                        title: cartList[index].title,
+                                        price: cartList[index].price,
+                                        quantity: cartList[index].quantity,
+                                        rating: cartList[index].rating,
+                                        image: cartList[index].image,
+                                        description:
+                                            cartList[index].description,
+                                      );
+                                      final ProductModel product =
+                                          ProductModel.fromCartHiveModel(
+                                              cartHiveModel);
+                                      context
+                                          .read<AddToCartCubit>()
+                                          .addToCart(product);
+                                      setState(() {});
+                                      print("Added from UI");
+                                    },
+                                    child: Icon(
+                                      CupertinoIcons.cart_badge_plus,
+                                      color: AppColors.darkOrange,
+                                    ),
+                                  ),
+                                ),
+                                BlocListener<AddToCartCubit, AddToCartState>(
+                                  listener: (context, state) {
+                                    // TODO: implement listener
+                                  },
+                                  child: InkWell(
+                                    onTap: () {
+                                      final CartHiveModel cartHiveModel =
+                                          CartHiveModel(
+                                        id: cartList[index].id,
+                                        title: cartList[index].title,
+                                        price: cartList[index].price,
+                                        quantity: cartList[index].quantity,
+                                        rating: cartList[index].rating,
+                                        image: cartList[index].image,
+                                        description:
+                                            cartList[index].description,
+                                      );
+                                      final ProductModel product =
+                                          ProductModel.fromCartHiveModel(
+                                              cartHiveModel);
+                                      context
+                                          .read<AddToCartCubit>()
+                                          .removeFromCart(product);
+                                      setState(() {});
+                                      print("Added from UI");
+                                    },
+                                    child: Icon(
+                                      CupertinoIcons.cart_badge_minus,
+                                      color: AppColors.darkOrange,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -136,7 +196,7 @@ class CartItemsWidget extends StatelessWidget {
                 );
               });
         } else {
-          return Center(child: Text(AppStrings.emptyCart));
+          return const Center(child: Text(AppStrings.emptyCart));
         }
       },
     ));

@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:store/constants/text_styles.dart';
 import 'package:store/core/utils/strings.dart';
 import 'package:store/features/presentation/views/widgets/workspace_title_widget.dart';
@@ -9,7 +8,6 @@ import '../widgets/home_product_items.dart';
 import '../widgets/main_app_bar.dart';
 import '../widgets/main_floating_action_button.dart';
 import '../widgets/special_offer_widget.dart';
-import 'all_products_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,20 +28,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const MainAppBar(),
             const SizedBox(height: 10),
-            Text(
+            const Text(
               AppStrings.popular,
               style: mainTitle,
             ),
             const SpecialOfferWidget(),
             const SizedBox(height: 10),
-            SubTitleWidget(subTitle: AppStrings.workspaces),
+            Container(
+                child: const SubTitleWidget(subTitle: AppStrings.workspaces)),
             const SizedBox(height: 10),
             const CategoryItemsWidget(),
             SubTitleWidget(
               subTitle: AppStrings.arrival,
               onTap: () => Navigator.pushNamed(
-                  context,
-                  AppStrings.allProductsRouter,arguments: AppStrings.argument),
+                  context, AppStrings.allProductsRouter,
+                  arguments: AppStrings.argument),
             ),
             const SizedBox(height: 10),
             const HomeProductItems(),

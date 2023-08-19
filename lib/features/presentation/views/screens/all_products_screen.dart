@@ -20,6 +20,47 @@ class AllProductsScreen extends StatefulWidget {
 
 class _AllProductsScreenState extends State<AllProductsScreen>
     with TickerProviderStateMixin {
+      String _searchQuery = '';
+
+  void _showSearchDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Search Products'),
+          content: TextField(
+            onChanged: (value) {
+              setState(() {
+                _searchQuery = value;
+              });
+            },
+            decoration: InputDecoration(labelText: 'Search...'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Call the search function using _searchQuery
+                _searchProducts(_searchQuery);
+              },
+              child: Text('Search'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _searchProducts(String query) {
+    // Call your AllProductsCubit method to search for products using the query
+    context.read<AllProductsCubit>().searchProducts(query);
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(

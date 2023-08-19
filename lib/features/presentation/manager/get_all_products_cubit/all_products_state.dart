@@ -2,7 +2,8 @@ part of 'all_products_cubit.dart';
 
 sealed class AllProductsState extends Equatable {
   const AllProductsState();
-
+  const factory AllProductsState.searchSuccess(
+      List<ProductModel> filteredProducts) = AllProductsSuccess;
   @override
   List<Object> get props => [];
 }
