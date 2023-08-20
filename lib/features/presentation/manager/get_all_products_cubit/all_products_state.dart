@@ -1,25 +1,38 @@
 part of 'all_products_cubit.dart';
-
 sealed class AllProductsState extends Equatable {
   const AllProductsState();
-  const factory AllProductsState.searchSuccess(
-      List<ProductModel> filteredProducts) = AllProductsSuccess;
+
   @override
   List<Object> get props => [];
 }
 
-final class AllProductsInitial extends AllProductsState {}
+class AllProductSearchSuccess extends AllProductsState {
+  final List<ProductModel> filteredProducts;
 
-final class AllProductsLoading extends AllProductsState {}
+  AllProductSearchSuccess(this.filteredProducts);
 
-final class AllProductsSuccess extends AllProductsState {
-  final List<ProductModel> products;
-
-  const AllProductsSuccess(this.products);
+  @override
+  List<Object> get props => [filteredProducts];
 }
 
-final class AllProductsFailure extends AllProductsState {
+class AllProductsInitial extends AllProductsState {}
+
+class AllProductsLoading extends AllProductsState {}
+
+class AllProductsSuccess extends AllProductsState {
+  final List<ProductModel> products;
+
+  AllProductsSuccess(this.products);
+
+  @override
+  List<Object> get props => [products];
+}
+
+class AllProductsFailure extends AllProductsState {
   final String failure;
 
-  const AllProductsFailure(this.failure);
+  AllProductsFailure(this.failure);
+
+  @override
+  List<Object> get props => [failure];
 }

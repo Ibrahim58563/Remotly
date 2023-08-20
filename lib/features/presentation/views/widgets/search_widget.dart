@@ -15,6 +15,8 @@ class SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String searchQuery = '';
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -37,12 +39,11 @@ class SearchWidget extends StatelessWidget {
                     border: InputBorder.none,
                   ),
                   style: greyText.copyWith(fontSize: 20),
-                  onChanged: (value) {
-                    var result = context.read<AllProductsCubit>().searchProducts(value);
-                    
+                  onChanged: (query) {
+                    context.read<AllProductsCubit>().searchProducts(query);
+                   
                   },
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
               ),
             ),

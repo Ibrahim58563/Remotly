@@ -4,7 +4,7 @@ import 'category_item_widget.dart';
 
 List<String> categoryName = [
   "Electronics",
-  "Jewellery",
+  "Jewelery",
   "Men's Clothing",
   "Women's Clothing",
 ];
@@ -14,7 +14,6 @@ List<String> categoryImage = [
   "https://i.pinimg.com/originals/79/1a/b8/791ab846361a914fe6a176523e0a2ae6.jpg",
   "https://trapstar.org/wp-content/uploads/2023/04/different-dresses-on-a-rack-730x487-1.jpg",
 ];
-List<Widget> categoryScreen = [];
 
 class CategoryItemsWidget extends StatelessWidget {
   const CategoryItemsWidget({
@@ -26,11 +25,17 @@ class CategoryItemsWidget extends StatelessWidget {
       child: ListView.separated(
           separatorBuilder: (context, index) => const SizedBox(width: 10),
           scrollDirection: Axis.horizontal,
-          itemCount: 3,
+          itemCount: 4,
           itemBuilder: (context, index) {
-            return CategoryItemWidget(
-              name: categoryName[index],
-              image: categoryImage[index],
+            return SizedBox(
+              child: CategoryItemWidget(
+                name: categoryName[index],
+                image: categoryImage[index],
+                onTap: () => Navigator.pushNamed(context, 'categoryProducts',
+                    arguments: {
+                      'categoryName': categoryName[index].toLowerCase()
+                    }),
+              ),
             );
           }),
     );

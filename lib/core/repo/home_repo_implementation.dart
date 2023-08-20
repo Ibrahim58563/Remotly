@@ -21,7 +21,7 @@ class HomeRepoImplementation extends HomeRepo {
       List<ProductModel> products = [];
       var data = await apiService.get(endPoint: '/products');
       print("data");
-      for (int i = 0; i < data.length;i++) {
+      for (int i = 0; i < data.length; i++) {
         products.add(ProductModel.fromJson(data[i]));
         print("+1 product");
       }
@@ -36,9 +36,24 @@ class HomeRepoImplementation extends HomeRepo {
   }
 
   @override
-  Future<Either<Failure, List<ProductModel>>> getCategory() {
-    // TODO: implement getCategory
-    throw UnimplementedError();
+  Future<Either<Failure, List<ProductModel>>> getCategory(
+      String categoryName) async {
+    try {
+      List<ProductModel> categoryProducts = [];
+      var data =
+          await apiService.get(endPoint: '/products/category/$categoryName');
+      print("data from category $categoryName");
+      for (int i = 0; i < data.length; i++) {
+        categoryProducts.add(ProductModel.fromJson(data[i]));
+        // print(categoryProducts);
+      }
+      return right(categoryProducts);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure(e.toString()));
+      }
+      return left(ServerFailure(e.toString()));
+    }
   }
 
   @override

@@ -24,29 +24,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         floatingActionButton: const MainFloatingActionsButton(),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const MainAppBar(),
-            const SizedBox(height: 10),
-            const Text(
-              AppStrings.popular,
-              style: mainTitle,
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const MainAppBar(),
+                    const SizedBox(height: 10),
+                    const Text(
+                      AppStrings.popular,
+                      style: mainTitle,
+                    ),
+                    const SpecialOfferWidget(),
+                    const SizedBox(height: 10),
+                    Container(
+                        child: const SubTitleWidget(
+                            subTitle: AppStrings.workspaces)),
+                    const SizedBox(height: 10),
+                    const CategoryItemsWidget(),
+                    SubTitleWidget(
+                      subTitle: AppStrings.arrival,
+                      onTap: () => Navigator.pushNamed(
+                          context, AppStrings.allProductsRouter,
+                          arguments: AppStrings.argument),
+                    ),
+                    const SizedBox(height: 10),
+                    const HomeProductItems(),
+                  ]),
             ),
-            const SpecialOfferWidget(),
-            const SizedBox(height: 10),
-            Container(
-                child: const SubTitleWidget(subTitle: AppStrings.workspaces)),
-            const SizedBox(height: 10),
-            const CategoryItemsWidget(),
-            SubTitleWidget(
-              subTitle: AppStrings.arrival,
-              onTap: () => Navigator.pushNamed(
-                  context, AppStrings.allProductsRouter,
-                  arguments: AppStrings.argument),
-            ),
-            const SizedBox(height: 10),
-            const HomeProductItems(),
-          ]),
+          ),
         ),
       ),
     );

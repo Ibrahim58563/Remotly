@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:store/core/models/product/product_model.dart';
 
 import '../../../../constants/images_assets.dart';
 import '../../../../constants/text_styles.dart';
@@ -30,7 +31,7 @@ class _AllProductsWidgetState extends State<AllProductsWidget>
   @override
   void dispose() {
     _controller.dispose();
-
+    _animationControllers.clear();
     super.dispose();
   }
 
@@ -79,7 +80,7 @@ class _AllProductsWidgetState extends State<AllProductsWidget>
                                         height: 80,
                                       ),
                                     ),
-                                     CircleAvatar(
+                                    CircleAvatar(
                                       backgroundColor: AppColors.white,
                                       child: Icon(
                                         CupertinoIcons.heart,
@@ -115,7 +116,7 @@ class _AllProductsWidgetState extends State<AllProductsWidget>
                                         .toString(),
                                     style: greyText,
                                   ),
-                                   Icon(
+                                  Icon(
                                     Icons.star_rounded,
                                     color: AppColors.orange,
                                   ),
@@ -136,7 +137,7 @@ class _AllProductsWidgetState extends State<AllProductsWidget>
                                   Text(
                                     "\$${state.products[index].price.toString()}",
                                     style: subtitle.copyWith(
-                                      color:  AppColors.darkOrange,
+                                      color: AppColors.darkOrange,
                                     ),
                                   ),
                                   InkWell(
@@ -144,6 +145,130 @@ class _AllProductsWidgetState extends State<AllProductsWidget>
                                       context
                                           .read<AddToCartCubit>()
                                           .addToCart(state.products[index]);
+                                      if (_animationControllers[index]
+                                          .isDismissed) {
+                                        _animationControllers[index].forward();
+                                        startAnimation = true;
+                                      } else {
+                                        _animationControllers[index].reverse();
+                                        startAnimation = false;
+                                      }
+                                    },
+                                    child: Lottie.asset(
+                                      Assets.animationsCart,
+                                      height: 40,
+                                      controller: _animationControllers[index],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                });
+          } else if (state is AllProductSearchSuccess) {
+            return ListView.separated(
+                separatorBuilder: (context, index) => const SizedBox(
+                      height: 10,
+                    ),
+                itemCount: state.filteredProducts.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 130,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border:
+                          Border.all(color: AppColors.grey.withOpacity(0.5)),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: AppColors.grey.withOpacity(0.2),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    Center(
+                                      child: Image.network(
+                                        state.filteredProducts[index].image
+                                            .toString(),
+                                        height: 80,
+                                      ),
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor: AppColors.white,
+                                      child: Icon(
+                                        CupertinoIcons.heart,
+                                        color: AppColors.yellow,
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                state.filteredProducts[index].title.toString(),
+                                style: subtitle,
+                                softWrap: true,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Rating: ${state.filteredProducts[index].rating!.rate}  "
+                                        .toString(),
+                                    style: greyText,
+                                  ),
+                                  Icon(
+                                    Icons.star_rounded,
+                                    color: AppColors.orange,
+                                  ),
+                                  Text(
+                                    "  Count: ${state.filteredProducts[index].rating!.count}"
+                                        .toString(),
+                                    style: greyText,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "\$${state.filteredProducts[index].price.toString()}",
+                                    style: subtitle.copyWith(
+                                      color: AppColors.darkOrange,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      context.read<AddToCartCubit>().addToCart(
+                                          state.filteredProducts[index]);
                                       if (_animationControllers[index]
                                           .isDismissed) {
                                         _animationControllers[index].forward();

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:store/constants/images_assets.dart';
 import 'package:store/constants/text_styles.dart';
+import 'package:store/core/utils/strings.dart';
 import 'package:store/features/presentation/views/widgets/all_products_widget.dart';
 import 'package:store/features/presentation/views/widgets/search_widget.dart';
 
@@ -20,52 +21,11 @@ class AllProductsScreen extends StatefulWidget {
 
 class _AllProductsScreenState extends State<AllProductsScreen>
     with TickerProviderStateMixin {
-      String _searchQuery = '';
-
-  void _showSearchDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Search Products'),
-          content: TextField(
-            onChanged: (value) {
-              setState(() {
-                _searchQuery = value;
-              });
-            },
-            decoration: InputDecoration(labelText: 'Search...'),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Call the search function using _searchQuery
-                _searchProducts(_searchQuery);
-              },
-              child: Text('Search'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _searchProducts(String query) {
-    // Call your AllProductsCubit method to search for products using the query
-    context.read<AllProductsCubit>().searchProducts(query);
-  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: allProductSearchWidget(),
+        appBar: allProductSearchWidget(AppStrings.allProducts),
         body: const Padding(
           padding: EdgeInsets.all(8.0),
           child: Column(

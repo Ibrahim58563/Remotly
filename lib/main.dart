@@ -6,6 +6,7 @@ import 'package:store/core/repo/home_repo_implementation.dart';
 import 'package:store/core/utils/app_router.dart';
 import 'package:store/core/utils/service_locator.dart';
 import 'package:store/features/presentation/manager/add_to_cart_cubit/add_to_cart_cubit.dart';
+import 'package:store/features/presentation/manager/get_products_by_cateogory/get_products_by_category_cubit.dart';
 import 'package:store/features/presentation/views/screens/home_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'core/models/cart_model/cart_hive_model.dart';
